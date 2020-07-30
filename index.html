@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+
+<body>
+    <h1>오픈 API(Kakao) 테스트 중</h1>
+
+    <input id="bookName" value="" type="text" onkeydown="JavaScript:Enter_Check();">
+    <button id="search">검색</button>
+
+
+    <p></p>
+    <!-- <p1></p1> -->
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
+            function Enter_Check() {
+                // 엔터키의 코드는 13입니다.
+                if (event.keyCode == 13) {
+                    nameTest();  // 실행할 이벤트
+                }
+            }</script>
+    <script>
+        $(document).ready(function () {
+            $("#search").click(function () {
+
+                $.ajax({
+                    method: "GET",
+                    url: "https://dapi.kakao.com/v3/search/book?target=title",
+                    data: { query: $("#bookName").val() },
+                    headers: { Authorization: "KakaoAK 2f602cf2dc3153870a74ec302a32e386" }
+                })
+                    .done(function (msg) {
+                        console.log(msg);
+                        console.log(msg.documents[0].title);
+                        console.log(msg.documents[0].thumbnail)
+                        console.log(msg.documents.length)
+
+                        for (var i = 0; i < msg.documents.length; i++) {
+                            $("p").append("<div class='left' id='a' ><strong >" + msg.documents[i].title + "</strong></div>");
+                            $("p").append("<div class='right' id='b' ><img src=" + msg.documents[i].thumbnail + "></img></div>");
+                        }
+                    });
+            })
+        })
+    </script>
+</body>
+
+</html>
